@@ -11,6 +11,8 @@ parameters:
     default: ''
   - name: PublishRuntime
     default: ''
+  - name: Workloads
+    default: ''
 
 jobs:
   - job: ${{ parameters.name }}
@@ -21,11 +23,19 @@ jobs:
       PublishFramework: ${{ parameters.PublishFramework }}
       PublishProject: ${{ parameters.PublishProject }}
       PublishRuntime: ${{ parameters.PublishRuntime }}
+      Workloads: ${{ parameters.Workloads }}
     steps:
       - task: UseDotNet@2
         displayName: Install .NET Core SDK
         inputs:
           useGlobalJson: true
+      - task: DotNetCoreCLI@2
+        condition: ne(variables.Workloads, '')
+        displayName: Install workloads
+        inputs:
+          command: 'custom'
+          custom: 'workload'
+          arguments: 'install $(Workloads)'
       - task: PowerShell@2
         displayName: Nuke Target Publish
         inputs:
