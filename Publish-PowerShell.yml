@@ -43,7 +43,7 @@ jobs:
           filePath: ./build.ps1
           arguments: --target Publish --configuration "$(BuildConfiguration)" --version-suffix "build$(Build.BuildNumber)" --publish-runtime "$(PublishRuntime)" --publish-framework "$(PublishFramework)" --publish-project "$(PublishProject)"
       - task: CmdLine@2
-        displayName: 'Strip'
+        displayName: 'Remove PDB'
         inputs:
           script: |
            del ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)/*.pdb
