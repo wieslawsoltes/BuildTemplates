@@ -47,6 +47,11 @@ jobs:
         inputs:
           script: |
            strip ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)
+      - task: CmdLine@2
+        displayName: 'Remove PDB'
+        inputs:
+          script: |
+           rm ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)/*.pdb
       - task: ArchiveFiles@2
         displayName: Archive Publish
         inputs:
