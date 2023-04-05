@@ -46,7 +46,7 @@ jobs:
         displayName: 'Remove PDB'
         inputs:
           script: |
-           del ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/*.pdb
+           for /D %I in ("./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)") do @del "%~I\*.pdb"
       - task: ArchiveFiles@2
         displayName: Archive Publish
         inputs:
