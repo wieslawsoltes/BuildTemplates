@@ -46,7 +46,7 @@ jobs:
         displayName: 'Remove PDB'
         inputs:
           script: |
-           del ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)/*.pdb
+           del ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/*.pdb
       - task: ArchiveFiles@2
         displayName: Archive Publish
         inputs:
