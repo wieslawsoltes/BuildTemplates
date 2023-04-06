@@ -46,7 +46,7 @@ jobs:
         displayName: 'Strip'
         inputs:
           script: |
-           test -f ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject) & strip ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)
+           strip ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)
       - task: CmdLine@2
         displayName: 'Remove PDB'
         inputs:
