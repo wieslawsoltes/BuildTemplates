@@ -46,7 +46,10 @@ jobs:
         displayName: 'Remove PDB'
         inputs:
           script: |
-           for /D %I in ("./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)") do @del "%~I\*.pdb"
+           set CURRENT_DIR=%cd%
+           cd artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)
+           del *.pdb
+           cd %CURRENT_DIR%
       - task: ArchiveFiles@2
         displayName: Archive Publish
         inputs:
