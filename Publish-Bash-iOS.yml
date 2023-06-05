@@ -1,0 +1,72 @@
+parameters:
+  - name: name
+    default: Publish_Bash_iOS
+  - name: vmImage
+    default: ''
+  - name: BuildConfiguration
+    default: ''
+  - name: PublishFramework
+    default: ''
+  - name: PublishProject
+    default: ''
+  - name: PublishRuntime
+    default: ''
+  - name: Workloads
+    default: ''
+  - name: Xcode
+    default: '/Applications/Xcode_14.3.app'
+
+jobs:
+  - job: ${{ parameters.name }}
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    variables:
+      BuildConfiguration: ${{ parameters.BuildConfiguration }}
+      PublishFramework: ${{ parameters.PublishFramework }}
+      PublishProject: ${{ parameters.PublishProject }}
+      PublishRuntime: ${{ parameters.PublishRuntime }}
+      Workloads: ${{ parameters.Workloads }}
+    steps:
+      - task: CmdLine@2
+        displayName: 'Set XCode Version'
+        inputs:
+          script: |
+            sudo xcode-select -s $(Xcode)
+      - task: UseDotNet@2
+        displayName: Install .NET Core SDK
+        inputs:
+          useGlobalJson: true
+      - task: DotNetCoreCLI@2
+        condition: ne(variables.Workloads, '')
+        displayName: Install workloads
+        inputs:
+          command: 'custom'
+          custom: 'workload'
+          arguments: 'install $(Workloads)'
+      - task: Bash@3
+        displayName: Nuke Target Publish
+        inputs:
+          targetType: filePath
+          filePath: ./build.sh
+          arguments: --target Publish --configuration "$(BuildConfiguration)" --version-suffix "build$(Build.BuildNumber)" --publish-runtime "$(PublishRuntime)" --publish-framework "$(PublishFramework)" --publish-project "$(PublishProject)"
+      - task: CmdLine@2
+        displayName: 'Strip'
+        inputs:
+          script: |
+           strip ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/$(PublishProject)
+      - task: CmdLine@2
+        displayName: 'Remove PDB'
+        inputs:
+          script: |
+           rm ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)/*.pdb
+      - task: ArchiveFiles@2
+        displayName: Archive Publish
+        inputs:
+          rootFolderOrFile: ./artifacts/Publish/$(PublishProject)-$(PublishFramework)-$(PublishRuntime)
+          includeRootFolder: false
+          archiveFile: ./artifacts/Publish/Zip/$(PublishProject)-$(PublishFramework)-$(PublishRuntime).zip
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Artifacts
+        inputs:
+          PathtoPublish: ./artifacts/Publish/Zip
+          ArtifactName: Publish
