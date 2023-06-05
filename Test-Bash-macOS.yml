@@ -17,6 +17,7 @@ jobs:
     variables:
       BuildConfiguration: ${{ parameters.BuildConfiguration }}
       Workloads: ${{ parameters.Workloads }}
+      Xcode: ${{ parameters.Xcode }}
     steps:
       - task: CmdLine@2
         displayName: 'Set XCode Version'
