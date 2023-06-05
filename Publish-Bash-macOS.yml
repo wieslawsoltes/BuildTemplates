@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: Publish_Bash_iOS
+    default: Publish_Bash_macOS
   - name: vmImage
     default: ''
   - name: BuildConfiguration
