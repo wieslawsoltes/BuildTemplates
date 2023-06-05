@@ -1,6 +1,6 @@
 parameters:
   - name: name
-    default: Test_Linux
+    default: Test_Bash_macOS
   - name: vmImage
     default: ''
   - name: BuildConfiguration
