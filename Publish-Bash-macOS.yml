@@ -26,6 +26,7 @@ jobs:
       PublishProject: ${{ parameters.PublishProject }}
       PublishRuntime: ${{ parameters.PublishRuntime }}
       Workloads: ${{ parameters.Workloads }}
+      Xcode: ${{ parameters.Xcode }}
     steps:
       - task: CmdLine@2
         displayName: 'Set XCode Version'
