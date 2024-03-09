@@ -8,7 +8,7 @@ parameters:
   - name: Workloads
     default: ''
   - name: Xcode
-    default: '/Applications/Xcode_14.3.app'
+    default: '/Applications/Xcode_15.1.app'
 
 jobs:
   - job: ${{ parameters.name }}
